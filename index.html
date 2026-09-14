@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPK Pariwisata Siledenden</title>
+    <style>
+        /* ==================== 1. STYLE TAMPILAN (CSS) ==================== */
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
+        body { display: flex; min-height: 100vh; background-color: #f4f6f9; color: #333; }
+        
+        /* Navigasi Samping (Sidebar) */
+        .sidebar { width: 260px; background-color: #1e293b; color: white; padding: 20px; flex-shrink: 0; }
+        .sidebar h2 { font-size: 20px; margin-bottom: 20px; text-align: center; color: #38bdf8; }
+        .menu-btn { width: 100%; padding: 12px; background: none; border: none; color: #cbd5e1; text-align: left; font-size: 14px; cursor: pointer; border-radius: 6px; margin-bottom: 5px; transition: 0.3s; }
+        .menu-btn:hover { background-color: #334155; color: white; }
+        .menu-btn.active { background-color: #0284c7; color: white; font-weight: bold; }
+        
+        /* Gaya Dropdown Sidebar */
+        .sidebar-select { width: 100%; padding: 10px; background-color: #334155; color: white; border: 1px solid #475569; border-radius: 6px; margin: 10px 0; cursor: pointer; }
+
+        /* Area Konten Utama */
+        .main-content { flex-grow: 1; padding: 40px; max-width: 800px; margin: 0 auto; }
+        .page { display: none; }
+        .page.active { display: block; }
+        
+        /* Elemen Kotak Informasi */
+        h1 { margin-bottom: 10px; color: #0f172a; }
+        h2 { margin-top: 20px; margin-bottom: 10px; color: #1e293b; }
+        .info-box { background-color: #e0f2fe; border-left: 5px solid #0284c7; padding: 15px; border-radius: 4px; margin-bottom: 20px; font-style: italic; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        
+        /* Gaya Fitur Pencarian & Tombol */
+        .search-box { display: flex; gap: 10px; margin: 20px 0; }
+        input[type="text"] { flex-grow: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; }
+        .btn-action { padding: 12px 20px; background-color: #0284c7; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; text-align: center; }
+        .btn-action:hover { background-color: #0369a1; }
+        .result-box { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; }
+        .success { background-color: #dcfce7; border: 1px solid #bbf7d0; color: #166534; display: block; }
+        .error { background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; display: block; }
+        
+        footer { margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 20px; font-size: 12px; color: #64748b; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== 2. STRUKTUR HALAMAN (HTML) ==================== -->
+    <div class="sidebar">
+        <h2>MENU UTAMA</h2>
+        <button class="menu-btn active" onclick="bukaHalaman('home')">HOME</button>
+        <button class="menu-btn" onclick="bukaHalaman('struktur')">STRUKTUR ORGANISASI</button>
+        <button class="menu-btn" onclick="bukaHalaman('visimisi')">VISI DAN MISI</button>
+        <button class="menu-btn" onclick="bukaHalaman('program')">PROGRAM PELATIHAN</button>
+        <button class="menu-btn" onclick="bukaHalaman('pendaftaran')">FORMULIR PENDAFTARAN</button>
+        
+        <!-- Dropdown Absensi di Sidebar -->
+        <select class="sidebar-select" onchange="pilihAbsensi(this.value)" id="dropdownAbsensi">
+            <option value="">MENU ABSENSI...</option>
+            <option value="absensi-siswa">Absensi Siswa</option>
+            <option value="absensi-tutor">Absensi Tutor</option>
+        </select>
+    </div>
+
+    <div class="main-content">
+        <!-- Halaman Utama / Home (Cek Sertifikat) -->
+        <div id="home" class="page active">
+            <h1>🎓 Pusat Verifikasi Sertifikat Alumni</h1>
+            <h3>LPK Pariwisata Siledenden</h3>
+            <p>Sistem mandiri berbasis JavaScript untuk memverifikasi keaslian sertifikat kelulusan.</p>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #cbd5e1;">
+            
+            <h3>🔍 Cari Data Kelulusan</h3>
+            <div class="search-box">
+                <input type="text" id="inputId" placeholder="Contoh: LPK-2026-001">
+                <button class="btn-action" onclick="verifikasiSertifikat()">Cari</button>
+            </div>
+            <div id="hasilPencarian" class="result-box"></div>
+        </div>
+
+        <!-- Halaman Visi Misi -->
+        <div id="visimisi" class="page">
+            <p style="color: #64748b;">Rumah / Profil / Visi dan Misi</p>
+            <h1>Visi dan Misi</h1>
+            <h2>Visi LPK Pariwisata Siledenden</h2>
+            <div class="info-box">
+                “Mewujudkan Lembaga Pelatihan Kerja Pariwisata yang unggul, berdaya saing global, dan menghasilkan tenaga kerja profesional yang mengedepankan kearifan lokal.”
+            </div>
+            <h2>Misi LPK Pariwisata Siledenden</h2>
+            <ul style="margin-left: 20px; line-height: 1.8;">
+                <li>Meningkatkan kualitas kompetensi sumber daya manusia di sektor perhotelan dan pariwisata.</li>
+                <li>Menyelenggarakan pelatihan kerja yang berbasis kebutuhan industri terkini (Link and Match).</li>
+                <li>Membangun jaringan kemitraan yang luas dengan hotel dan agen pariwisata nasional maupun internasional.</li>
+            </ul>
+        </div>
+
+        <!-- Halaman Struktur Organisasi -->
+        <div id="struktur" class="page">
+            <p style="color: #64748b;">Rumah / Profil / Struktur Organisasi</p>
+            <h1>Struktur Organisasi</h1>
+            <p>Susunan kepengurusan dan manajemen internal LPK Pariwisata Siledenden.</p>
+            
+            <h2>Pimpinan Lembaga</h2>
+            <div class="card-grid">
+                <div class="card"><strong>Pelindung / Penasihat:</strong><br>Kepala Dinas Tenaga Kerja</div>
+                <div class="card"><strong>Direktur LPK Siledenden:</strong><br>[Nama Direktur, S.Tr.Par.]</div>
+            </div>
+            <h2>Manajemen & Instruktur</h2>
+            <div class="card-grid">
+                <div class="card"><strong>Manajer Akademik:</strong><br>[Nama Manajer]</div>
+                <div class="card"><strong>Instruktur Perhotelan:</strong><br>[Nama Instruktur]</div>
+            </div>
+        </div>
+
+        <!-- Halaman Program -->
+        <div id="program" class="page">
+            <p style="color: #64748b;">Rumah / Program</p>
+            <h1>Program Pelatihan</h1>
+            <ol style="margin-left: 20px; line-height: 2;">
+                <li>Perhotelan (F&B Service)</li>
+                <li>Tata Hidang (Bartending)</li>
+                <li>Pemandu Wisata (Tour Guide)</li>
+            </ol>
+        </div>
+
+        <!-- Halaman Pendaftaran -->
+        <div id="pendaftaran" class="page">
+            <p style="color: #64748b;">Rumah / Formulir Pendaftaran</p>
+            <h1>📝 Pendaftaran Peserta Didik Baru</h1>
+            <p style="margin-bottom: 20px;">Silakan klik tombol di bawah ini untuk mengisi formulir pendaftaran resmi LPK Pariwisata Siledenden di Google Sheets.</p>
+            <a href="https://google.com" target="_blank" class="btn-action" style="width: 100%;">Buka Formulir Pendaftaran ➡️</a>
+        </div>
+
+        <!-- Halaman Absensi Siswa -->
+        <div id="absensi-siswa" class="page">
+            <p style="color: #64748b;">Rumah / Absensi / Absensi Siswa</p>
+            <h1>👨‍Grad Harian Siswa</h1>
+            <p style="margin-bottom: 20px;">Khusus siswa aktif LPK Pariwisata Siledenden, silakan isi kehadiran Anda melalui tautan Google Sheets berikut.</p>
+            <a href="https://google.com" target="_blank" class="btn-action" style="width: 100%;">Buka Link Absensi Siswa ➡️</a>
+        </div>
+
+        <!-- Halaman Absensi Tutor -->
+        <div id="absensi-tutor" class="page">
+            <p style="color: #64748b;">Rumah / Absensi / Absensi Tutor</p>
+            <h1>👨‍🏫 Absensi Harian Tutor</h1>
+            <p style="margin-bottom: 20px;">Khusus instruktur ahli, silakan isi pelaporan kehadiran mengajar Anda melalui tautan Google Sheets berikut.</p>
+            <a href="https://google.com" target="_blank" class="btn-action" style="width: 100%;">Buka Link Absensi Tutor ➡️</a>
+        </div>
+
+        <footer>
+            ©️ 2026 LPK Pariwisata Siledenden. Seluruh hak cipta dilindungi.
+        </footer>
+    </div>
+
+    <!-- ==================== 3. LOGIKA INTERAKTIF (JAVASCRIPT) ==================== -->
+    <script>
+        // Data Alumni (Dummy Database)
+        const databaseAlumni = [
+            { id: "LPK-2026-001", nama: "Budi Santoso", program: "Perhotelan (F&B Service)", link: "https://google.com" },
+            { id: "LPK-2026-002", nama: "Siti Aminah", program: "Tata Hidang (Bartending)", link: "https://google.com" }
+        ];
+
+        // Fungsi JavaScript untuk Pindah Halaman Menu
+        function bukaHalaman(idHalaman) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(halaman => halaman.classList.remove('active'));
+            // Matikan semua status aktif tombol menu
+            document.querySelectorAll('.menu-btn').forEach(tombol => tombol.classList.remove('active'));
+            
+            // Tampilkan halaman yang dipilih
+            document.getElementById(idHalaman).classList.add('active');
