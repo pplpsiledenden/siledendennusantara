@@ -3,169 +3,665 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LPK Pariwisata Siledenden</title>
+    <title>PPLP Pariwisata Siledenden Nusantara</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ==================== 1. STYLE TAMPILAN (CSS) ==================== */
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; }
-        body { display: flex; min-height: 100vh; background-color: #f4f6f9; color: #333; }
-        
-        /* Navigasi Samping (Sidebar) */
-        .sidebar { width: 260px; background-color: #1e293b; color: white; padding: 20px; flex-shrink: 0; }
-        .sidebar h2 { font-size: 20px; margin-bottom: 20px; text-align: center; color: #38bdf8; }
-        .menu-btn { width: 100%; padding: 12px; background: none; border: none; color: #cbd5e1; text-align: left; font-size: 14px; cursor: pointer; border-radius: 6px; margin-bottom: 5px; transition: 0.3s; }
-        .menu-btn:hover { background-color: #334155; color: white; }
-        .menu-btn.active { background-color: #0284c7; color: white; font-weight: bold; }
-        
-        /* Gaya Dropdown Sidebar */
-        .sidebar-select { width: 100%; padding: 10px; background-color: #334155; color: white; border: 1px solid #475569; border-radius: 6px; margin: 10px 0; cursor: pointer; }
+        :root {
+            --primary-yellow: #FFDE00;
+            --lemon-gold: #F4C430;
+            --deep-blue: #0A192F;
+            --dark-black: #111111;
+            --pure-white: #FFFFFF;
+            --light-gray: #F8F9FA;
+            --text-gray: #666666;
+            --whatsapp-green: #25D366;
+            --error-red: #DC3545;
+        }
 
-        /* Area Konten Utama */
-        .main-content { flex-grow: 1; padding: 40px; max-width: 800px; margin: 0 auto; }
-        .page { display: none; }
-        .page.active { display: block; }
-        
-        /* Elemen Kotak Informasi */
-        h1 { margin-bottom: 10px; color: #0f172a; }
-        h2 { margin-top: 20px; margin-bottom: 10px; color: #1e293b; }
-        .info-box { background-color: #e0f2fe; border-left: 5px solid #0284c7; padding: 15px; border-radius: 4px; margin-bottom: 20px; font-style: italic; }
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
-        
-        /* Gaya Fitur Pencarian & Tombol */
-        .search-box { display: flex; gap: 10px; margin: 20px 0; }
-        input[type="text"] { flex-grow: 1; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 15px; }
-        .btn-action { padding: 12px 20px; background-color: #0284c7; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; text-decoration: none; display: inline-block; text-align: center; }
-        .btn-action:hover { background-color: #0369a1; }
-        .result-box { margin-top: 20px; padding: 20px; border-radius: 8px; display: none; }
-        .success { background-color: #dcfce7; border: 1px solid #bbf7d0; color: #166534; display: block; }
-        .error { background-color: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; display: block; }
-        
-        footer { margin-top: 40px; border-top: 1px solid #e2e8f0; padding-top: 20px; font-size: 12px; color: #64748b; text-align: center; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--pure-white);
+            color: var(--dark-black);
+            overflow-x: hidden;
+        }
+
+        /* 1. HEADER UTAMA */
+        header {
+            background-color: var(--pure-white);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .logo-placeholder {
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--dark-black);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .logo-box {
+            width: 35px;
+            height: 35px;
+            background-color: var(--primary-yellow);
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .header-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .search-icon, .menu-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--dark-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-toggle svg {
+            transition: transform 0.3s ease;
+        }
+
+        /* 2 & 3. INTERAKSI MENU OVERLAY */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--pure-white);
+            z-index: 90;
+            padding: 80px 24px 40px 24px;
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow-y: auto;
+        }
+
+        .menu-overlay.active {
+            transform: translateX(0);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .btn-daftar {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #0056b3;
+            background-color: var(--pure-white);
+            color: #0056b3;
+            border-radius: 8px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .btn-masuk {
+            flex: 1;
+            padding: 12px;
+            background-color: #0056b3;
+            color: var(--pure-white);
+            border: 2px solid #0056b3;
+            border-radius: 8px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .nav-item {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark-black);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #EEEEEE;
+        }
+
+        .chevron {
+            transition: transform 0.3s ease;
+        }
+
+        .chevron.rotate {
+            transform: rotate(180deg);
+        }
+
+        .sub-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            list-style: none;
+            padding-left: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sub-menu.active {
+            max-height: 200px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sub-item {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-gray);
+            padding: 6px 0;
+            cursor: pointer;
+        }
+        /* SUB-MENU PANELS (FULL SCREEN OVERLAYS FROM RIGHT) */
+        .sub-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--pure-white);
+            z-index: 150;
+            transform: translateX(100%);
+            transition: transform 0.3s ease-out;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .sub-overlay.active {
+            transform: translateX(0);
+        }
+
+        .overlay-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--primary-yellow);
+            padding-bottom: 15px;
+        }
+
+        .overlay-header h2 {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .btn-close-overlay {
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* 3A. STRUKTUR ORGANISASI CONTENT */
+        .org-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .org-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            width: 100%;
+            flex-wrap: wrap;
+        }
+
+        .org-card {
+            background: var(--light-gray);
+            border: 1px dashed var(--text-gray);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            min-width: 120px;
+            flex: 1;
+        }
+
+        .org-card.top { max-width: 180px; }
+        .org-card.mid { max-width: 150px; }
+        .org-card.bot { min-width: calc(50% - 10px); max-width: calc(50% - 10px); }
+
+        .img-placeholder {
+            width: 70px;
+            height: 70px;
+            background-color: #E0E0E0;
+            border-radius: 6px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>');
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .org-input {
+            width: 100%;
+            border: 1px solid #DDD;
+            border-radius: 4px;
+            padding: 4px 6px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+        /* 3B. VISI MISI CONTENT */
+        .vm-section {
+            margin-bottom: 25px;
+        }
+
+        .vm-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            background-color: var(--primary-yellow);
+            display: inline-block;
+            padding: 2px 10px;
+            margin-bottom: 12px;
+        }
+
+        .vm-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--dark-black);
+            text-align: justify;
+        }
+
+        .misi-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .misi-item strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--dark-black);
+            margin-bottom: 2px;
+        }
+
+        /* 3C. PROGRAM JURUSAN CONTENT */
+        .card-layout {
+            background: var(--light-gray);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--lemon-gold);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .card-layout h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .card-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .card-list li {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .card-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--lemon-gold);
+            font-weight: bold;
+            font-size: 1.2rem;
+            top: -2px;
+        }
+
+        /* BACKUP REGISTRATION FORM */
+        .backup-form {
+            margin-top: 20px;
+            background: #FFFDE7;
+            border: 1px solid var(--primary-yellow);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .backup-form h4 { font-weight: 700; margin-bottom: 10px; font-size: 0.9rem;}
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; }
+        .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #CCC; border-radius: 4px; font-size: 0.85rem;}
+        /* 4. HERO SECTION */
+        .hero {
+            background-color: var(--primary-yellow);
+            padding: 40px 24px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .hero-top { font-size: 0.85rem; font-weight: 700; letter-spacing: 1px; color: var(--dark-black); }
+        .hero-mid { font-size: 2.2rem; font-weight: 900; line-height: 1.1; color: var(--dark-black); }
+        .hero-bot { font-size: 0.75rem; font-weight: 600; background-color: rgba(0,0,0,0.08); padding: 4px 12px; border-radius: 20px; color: var(--dark-black); }
+
+        /* 5. KONTEN UTAMA & 6. KEUNGGULAN */
+        .main-content { padding: 30px 24px; background-color: var(--pure-white); }
+        .image-placeholder-main { width: 100%; height: 200px; background-color: #E0E0E0; border-radius: 8px; margin-bottom: 20px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://w3.org" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="%23aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>'); background-position: center; background-repeat: no-repeat; }
+        .headline { font-size: 1.35rem; font-weight: 800; line-height: 1.4; color: var(--dark-black); margin-bottom: 25px; }
+        .highlight-blue { color: #0056b3; }
+        .highlight-amber { color: #E65100; }
+        .cards-grid { display: flex; flex-direction: column; gap: 16px; margin-bottom: 30px; }
+        .minimal-card { background-color: var(--light-gray); border: 1px solid #EAEAEA; border-radius: 10px; padding: 16px; }
+        .minimal-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+        .minimal-card p { font-size: 0.88rem; line-height: 1.5; color: #444444; }
+
+        /* 7 & 8. PHOTO & REELS ARSIP */
+        .dynamic-section { padding: 30px 24px; border-top: 1px solid #EEE; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .section-title { font-size: 1.15rem; font-weight: 800; }
+        .btn-more { background: none; border: none; color: #0056b3; font-weight: 700; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .media-card { width: 100%; margin-bottom: 20px; }
+        .media-box { width: 100%; height: 180px; background-color: #E8E8E8; border-radius: 8px; margin-bottom: 10px; position: relative; overflow: hidden; }
+        .reels-box::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: rgba(255,255,255,0.3); backdrop-filter: blur(4px); border-radius: 50%; z-index: 2; }
+        .play-icon { position: absolute; top: 50%; left: 53%; transform: translate(-50%, -50%); width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 16px solid var(--pure-white); z-index: 3; }
+        .media-title { font-size: 0.95rem; font-weight: 700; color: var(--dark-black); line-height: 1.3; margin-bottom: 4px; }
+        .media-meta { font-size: 0.78rem; color: var(--text-gray); }
+
+        /* 9 & 10. SUPPORTED, FOOTER & VALIDATION OVERLAY */
+        .supported-section { background-color: var(--light-gray); padding: 35px 20px; text-align: center; border-top: 1px solid #EAEAEA; }
+        .supported-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .columns-3 { display: flex; justify-content: space-between; gap: 10px; text-align: left; }
+        .partner-col { flex: 1; display: flex; flex-direction: column; gap: 6px; font-size: 0.72rem; color: #555555; line-height: 1.3; font-weight: 500; }
+        footer { background-color: var(--deep-blue); color: var(--pure-white); padding: 40px 24px 20px 24px; }
+        .footer-logo-area { margin-bottom: 25px; }
+        .footer-logo-placeholder { width: 50px; height: 50px; background-color: var(--primary-yellow); border-radius: 8px; margin-bottom: 15px; }
+        .footer-info { font-size: 0.82rem; line-height: 1.5; opacity: 0.9; display: flex; flex-direction: column; gap: 6px; }
+        .footer-info strong { font-size: 0.9rem; display: block; margin-bottom: 4px; color: var(--primary-yellow); }
+        .footer-links { margin-top: 30px; display: flex; flex-direction: column; gap: 12px; }
+        .footer-link-item { color: var(--pure-white); text-decoration: none; font-size: 0.88rem; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+        .footer-link-item svg { fill: currentColor; }
+        .validation-box { margin-top: 35px; background-color: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+        .validation-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; color: var(--primary-yellow); }
+        .validation-desc { font-size: 0.78rem; opacity: 0.7; margin-bottom: 12px; }
+        .input-group { display: flex; gap: 8px; }
+        .cert-input { flex: 1; padding: 10px 14px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.2); background-color: rgba(0,0,0,0.2); color: var(--pure-white); font-size: 0.85rem; }
+        .btn-check-cert { background-color: var(--primary-yellow); color: var(--dark-black); border: none; border-radius: 6px; padding: 0 16px; font-weight: 700; font-size: 0.85rem; cursor: pointer; }
+        .error-msg { display: none; align-items: center; gap: 6px; color: #FF5252; font-size: 0.78rem; font-weight: 600; margin-top: 8px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { width: 100%; background-color: var(--pure-white); border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px; color: var(--dark-black); transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); max-height: 85vh; overflow-y: auto; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .cert-table { width: 100%; border-collapse: collapse; margin-top: 15px; margin-bottom: 20px; font-size: 0.85rem; }
+        .cert-table th, .cert-table td { border: 1px solid #E0E0E0; padding: 10px; text-align: left; }
+        .cert-table th { background-color: var(--light-gray); font-weight: 700; }
+        .btn-download-pdf { display: block; width: 100%; background-color: var(--deep-blue); color: var(--pure-white); text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; }
+        .copyright { margin-top: 40px; text-align: center; font-size: 0.72rem; opacity: 0.5; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; width: 56px; height: 56px; background-color: var(--whatsapp-green); color: var(--pure-white); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 999; text-decoration: none; }
     </style>
 </head>
 <body>
-
-    <!-- ==================== 2. STRUKTUR HALAMAN (HTML) ==================== -->
-    <div class="sidebar">
-        <h2>MENU UTAMA</h2>
-        <button class="menu-btn active" onclick="bukaHalaman('home')">HOME</button>
-        <button class="menu-btn" onclick="bukaHalaman('struktur')">STRUKTUR ORGANISASI</button>
-        <button class="menu-btn" onclick="bukaHalaman('visimisi')">VISI DAN MISI</button>
-        <button class="menu-btn" onclick="bukaHalaman('program')">PROGRAM PELATIHAN</button>
-        <button class="menu-btn" onclick="bukaHalaman('pendaftaran')">FORMULIR PENDAFTARAN</button>
-        
-        <!-- Dropdown Absensi di Sidebar -->
-        <select class="sidebar-select" onchange="pilihAbsensi(this.value)" id="dropdownAbsensi">
-            <option value="">MENU ABSENSI...</option>
-            <option value="absensi-siswa">Absensi Siswa</option>
-            <option value="absensi-tutor">Absensi Tutor</option>
-        </select>
+    <header>
+        <div class="logo-placeholder"><div class="logo-box"></div><span>SILEDENDEN</span></div>
+        <div class="header-icons">
+            <button class="search-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+            <button class="menu-toggle" id="menuToggleBtn"><svg id="hamburgerIcon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg></button>
+        </div>
+    </header>
+    <div class="menu-overlay" id="menuOverlay">
+        <div class="auth-buttons">
+            <a href="https://jotform.com" target="_blank" rel="noopener noreferrer" class="btn-daftar">Daftar</a>
+            <a href="#" class="btn-masuk">Masuk</a>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item" id="btnBeranda">Beranda</li>
+            <li class="nav-item" id="btnInformasi">
+                <span>Informasi</span>
+                <svg class="chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </li>
+            <ul class="sub-menu" id="subMenuInformasi">
+                <li class="sub-item" id="subStruktur">Struktur Organisasi</li>
+                <li class="sub-item" id="subVisiMisi">Visi Misi</li>
+                <li class="sub-item" id="subProgram">Program dan Jurusan</li>
+            </ul>
+        </ul>
+        <div class="backup-form">
+            <h4>Formulir Cadangan Pendaftaran</h4>
+            <div class="form-group"><label>Nama Lengkap</label><input type="text" placeholder="Masukkan nama Anda"></div>
+            <div class="form-group"><label>Nomor WhatsApp</label><input type="tel" placeholder="Contoh: 08123456789"></div>
+            <div class="form-group"><label>Pilihan Program Studi</label>
+                <select>
+                    <option>F&B Product / Tata Boga</option>
+                    <option>F&B Service / Restaurant & Bar</option>
+                    <option>Front Office</option>
+                    <option>House Keeping / Tata Graha</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="sub-overlay" id="overlayStruktur">
+        <div class="overlay-header">
+            <h2>Struktur Organisasi</h2>
+            <button class="btn-close-overlay" onclick="closeSubOverlay('overlayStruktur')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+        </div>
+        <div class="org-container">
+            <div class="org-row">
+                <div class="org-card top"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama Pimpinan"><input type="text" class="org-input" placeholder="Jabatan"></div>
+            </div>
+            <div class="org-row">
+                <div class="org-card mid"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+                <div class="org-card mid"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+            </div>
+            <div class="org-row">
+                <div class="org-card bot"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+                <div class="org-card bot"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+                <div class="org-card bot"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+                <div class="org-card bot"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+                <div class="org-card bot"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+                <div class="org-card bot"><div class="img-placeholder"></div><input type="text" class="org-input" placeholder="Nama"><input type="text" class="org-input" placeholder="Jabatan"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="main-content">
-        <!-- Halaman Utama / Home (Cek Sertifikat) -->
-        <div id="home" class="page active">
-            <h1>🎓 Pusat Verifikasi Sertifikat Alumni</h1>
-            <h3>LPK Pariwisata Siledenden</h3>
-            <p>Sistem mandiri berbasis JavaScript untuk memverifikasi keaslian sertifikat kelulusan.</p>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #cbd5e1;">
-            
-            <h3>🔍 Cari Data Kelulusan</h3>
-            <div class="search-box">
-                <input type="text" id="inputId" placeholder="Contoh: LPK-2026-001">
-                <button class="btn-action" onclick="verifikasiSertifikat()">Cari</button>
-            </div>
-            <div id="hasilPencarian" class="result-box"></div>
+    <div class="sub-overlay" id="overlayVisiMisi">
+        <div class="overlay-header">
+            <h2>Visi Misi</h2>
+            <button class="btn-close-overlay" onclick="closeSubOverlay('overlayVisiMisi')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
-
-        <!-- Halaman Visi Misi -->
-        <div id="visimisi" class="page">
-            <p style="color: #64748b;">Rumah / Profil / Visi dan Misi</p>
-            <h1>Visi dan Misi</h1>
-            <h2>Visi LPK Pariwisata Siledenden</h2>
-            <div class="info-box">
-                “Mewujudkan Lembaga Pelatihan Kerja Pariwisata yang unggul, berdaya saing global, dan menghasilkan tenaga kerja profesional yang mengedepankan kearifan lokal.”
-            </div>
-            <h2>Misi LPK Pariwisata Siledenden</h2>
-            <ul style="margin-left: 20px; line-height: 1.8;">
-                <li>Meningkatkan kualitas kompetensi sumber daya manusia di sektor perhotelan dan pariwisata.</li>
-                <li>Menyelenggarakan pelatihan kerja yang berbasis kebutuhan industri terkini (Link and Match).</li>
-                <li>Membangun jaringan kemitraan yang luas dengan hotel dan agen pariwisata nasional maupun internasional.</li>
+        <div class="vm-section">
+            <div class="vm-title">VISI</div>
+            <p class="vm-text">"Membantu Pemerintah mencerdaskan kehidupan bangsa Indonesia untuk mendapatkan pekerjaan yang layak, serta menciptakan Sumber Daya Manusia (SDM) yang handal, siap pakai, dan berdaya saing tinggi di pasar kerja global."</p>
+        </div>
+        <div class="vm-section">
+            <div class="vm-title">MISI</div>
+            <ul class="misi-list">
+                <li class="misi-item"><strong>Menyelenggarakan Pembelajaran Berbasis Industri:</strong> Menerapkan konsep teori dan praktik yang sesuai dengan kebutuhan riil industri pariwisata dan perhotelan masa kini.</li>
+                <li class="misi-item"><strong>Menyediakan Instruktur Berpengalaman:</strong> Didukung oleh instruktur ahli yang berpengalaman dan masih aktif bekerja di berbagai Hotel, Restaurant, dan Villa terkemuka.</li>
+                <li class="misi-item"><strong>Fasilitas & Sarana Praktik Lengkap:</strong> Menunjang proses belajar mengajar dengan sarana penunjang praktik yang lengkap dan standar industri.</li>
+                <li class="misi-item"><strong>Program On The Job Training Internasional:</strong> Menyalurkan siswa untuk magang dan ditempatkan di Hotel, Villa, Restaurant, Cafe, BAR, Diskotik, hingga Bungalow yang berstandar Internasional.</li>
+                <li class="misi-item"><strong>Penyaluran Kerja yang Luas:</strong> Membangun rekanan kerja yang luas dan dinamis guna memastikan alumni tersebar di berbagai pusat pariwisata utama seperti Kuta Lombok, City Hotel, Senggigi, 3 Gili (Trawangan, Air, Meno), hingga Pulau Bali.</li>
             </ul>
         </div>
-
-        <!-- Halaman Struktur Organisasi -->
-        <div id="struktur" class="page">
-            <p style="color: #64748b;">Rumah / Profil / Struktur Organisasi</p>
-            <h1>Struktur Organisasi</h1>
-            <p>Susunan kepengurusan dan manajemen internal LPK Pariwisata Siledenden.</p>
-            
-            <h2>Pimpinan Lembaga</h2>
-            <div class="card-grid">
-                <div class="card"><strong>Pelindung / Penasihat:</strong><br>Kepala Dinas Tenaga Kerja</div>
-                <div class="card"><strong>Direktur LPK Siledenden:</strong><br>[Nama Direktur, S.Tr.Par.]</div>
-            </div>
-            <h2>Manajemen & Instruktur</h2>
-            <div class="card-grid">
-                <div class="card"><strong>Manajer Akademik:</strong><br>[Nama Manajer]</div>
-                <div class="card"><strong>Instruktur Perhotelan:</strong><br>[Nama Instruktur]</div>
-            </div>
+    </div>
+    <div class="sub-overlay" id="overlayProgram">
+        <div class="overlay-header">
+            <h2>Program dan Jurusan</h2>
+            <button class="btn-close-overlay" onclick="closeSubOverlay('overlayProgram')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
         </div>
-
-        <!-- Halaman Program -->
-        <div id="program" class="page">
-            <p style="color: #64748b;">Rumah / Program</p>
-            <h1>Program Pelatihan</h1>
-            <ol style="margin-left: 20px; line-height: 2;">
-                <li>Perhotelan (F&B Service)</li>
-                <li>Tata Hidang (Bartending)</li>
-                <li>Pemandu Wisata (Tour Guide)</li>
-            </ol>
+        <div class="card-layout">
+            <h3>1. PROGRAM KETERAMPILAN</h3>
+            <ul class="card-list"><li>F&B Product / Tata Boga</li><li>F&B Service / Restaurant & Bar</li><li>Front Office</li><li>House Keeping / Tata Graha</li><li>English For Jobs</li><li>Tours & Travel / Guide</li><li>Barista</li></ul>
         </div>
-
-        <!-- Halaman Pendaftaran -->
-        <div id="pendaftaran" class="page">
-            <p style="color: #64748b;">Rumah / Formulir Pendaftaran</p>
-            <h1>📝 Pendaftaran Peserta Didik Baru</h1>
-            <p style="margin-bottom: 20px;">Silakan klik tombol di bawah ini untuk mengisi formulir pendaftaran resmi LPK Pariwisata Siledenden di Google Sheets.</p>
-            <a href="https://google.com" target="_blank" class="btn-action" style="width: 100%;">Buka Formulir Pendaftaran ➡️</a>
+        <div class="card-layout">
+            <h3>2. BIAYA PENDIDIKAN SUDAH TEMASUK</h3>
+            <ul class="card-list"><li>Kursus Bahasa Inggris</li><li>Sertifikat Akademik</li><li>Sertifikat Table Manner dari Hotel Berbintang</li><li>Pakaian Seragam Lengkap</li><li>ID Card (Kartu Pelajar)</li><li>Sertifikat Uji Kompetensi dari Hotel Berbintang</li><li>Kartu BKK</li></ul>
         </div>
-
-        <!-- Halaman Absensi Siswa -->
-        <div id="absensi-siswa" class="page">
-            <p style="color: #64748b;">Rumah / Absensi / Absensi Siswa</p>
-            <h1>👨‍Grad Harian Siswa</h1>
-            <p style="margin-bottom: 20px;">Khusus siswa aktif LPK Pariwisata Siledenden, silakan isi kehadiran Anda melalui tautan Google Sheets berikut.</p>
-            <a href="https://google.com" target="_blank" class="btn-action" style="width: 100%;">Buka Link Absensi Siswa ➡️</a>
+        <div class="card-layout">
+            <h3>3. SYARAT PENDAFTARAN</h3>
+            <ul class="card-list"><li>Mengisi Formulir Pendaftaran</li><li>Menyerahkan Salinan STTB SLTA/SMK/Sederajat 2 Lembar</li><li>Menyerahkan Pas Photo Warna 3x4 = 5 Lembar</li><li>Membayar Uang Pendaftaran Rp. 200.000,-</li><li>Menyerahkan Photo Copy KTP/KK</li><li>Materai 1 Lembar</li></ul>
         </div>
-
-        <!-- Halaman Absensi Tutor -->
-        <div id="absensi-tutor" class="page">
-            <p style="color: #64748b;">Rumah / Absensi / Absensi Tutor</p>
-            <h1>👨‍🏫 Absensi Harian Tutor</h1>
-            <p style="margin-bottom: 20px;">Khusus instruktur ahli, silakan isi pelaporan kehadiran mengajar Anda melalui tautan Google Sheets berikut.</p>
-            <a href="https://google.com" target="_blank" class="btn-action" style="width: 100%;">Buka Link Absensi Tutor ➡️</a>
-        </div>
-
-        <footer>
-            ©️ 2026 LPK Pariwisata Siledenden. Seluruh hak cipta dilindungi.
-        </footer>
     </div>
 
-    <!-- ==================== 3. LOGIKA INTERAKTIF (JAVASCRIPT) ==================== -->
-    <script>
-        // Data Alumni (Dummy Database)
-        const databaseAlumni = [
-            { id: "LPK-2026-001", nama: "Budi Santoso", program: "Perhotelan (F&B Service)", link: "https://google.com" },
-            { id: "LPK-2026-002", nama: "Siti Aminah", program: "Tata Hidang (Bartending)", link: "https://google.com" }
-        ];
+    <section class="hero">
+        <div class="hero-top">PUSAT PENDIDIKAN DAN LATIHAN PARIWISATA</div>
+        <div class="hero-mid">SILEDENDEN NUSANTARA</div>
+        <div class="hero-bot">Izin No. 421.9/563/Disdik</div>
+    </section>
 
-        // Fungsi JavaScript untuk Pindah Halaman Menu
-        function bukaHalaman(idHalaman) {
-            // Sembunyikan semua halaman
-            document.querySelectorAll('.page').forEach(halaman => halaman.classList.remove('active'));
-            // Matikan semua status aktif tombol menu
-            document.querySelectorAll('.menu-btn').forEach(tombol => tombol.classList.remove('active'));
-            
-            // Tampilkan halaman yang dipilih
-            document.getElementById(idHalaman).classList.add('active');
+    <section class="main-content">
+        <div class="image-placeholder-main"></div>
+        <h1 class="headline">Raih Masa Depan Cerah: Siap Kerja di Bidang <span class="highlight-blue">Perhotelan & Tour Guide</span>, dan <span class="highlight-amber">Go Internasional</span> Bersama Siledenden Nusantara!</h1>
+        <div class="cards-grid">
+            <div class="minimal-card">
+                <h4>Belajar Langsung dari Ahlinya</h4>
+                <p>Kurikulum <strong>di rancang khusus oleh</strong> <strong>mentor praktisi lapangan</strong> mengasian bakat kamu hingga di lirik <strong>industri perhotelan</strong>.</p>
+            </div>
+            <div class="minimal-card">
+                <h4>Koneksi Internasional</h4>
+                <p>Membuka peluang karir <strong>Magang di luar negri</strong> dan <strong>Kapal Pesiar</strong></p>
+            </div>
+        </div>
+    </section>
+    <section class="dynamic-section">
+        <div class="section-header"><div class="section-title">Foto Kegiatan</div><button class="btn-more" onclick="openSubOverlay('overlayFotoArsip')">Lihat Selengkapnya →</button></div>
+        <div class="media-card"><div class="media-box"></div><div class="media-title">Praktik Table Manner Siswa di Hotel Berbintang</div><div class="media-meta">12 September 2026</div></div>
+    </section>
+
+    <section class="dynamic-section">
+        <div class="section-header"><div class="section-title">Video Reels Kegiatan</div><button class="btn-more" onclick="openSubOverlay('overlayVideoArsip')">Lihat Selengkapnya →</button></div>
+        <div class="media-card"><div class="media-box reels-box"><div class="play-icon"></div></div><div class="media-title">Keseruan Kelas Praktik Barista & Latte Art</div><div class="media-meta">10 September 2026</div></div>
+    </section>
+
+    <div class="sub-overlay" id="overlayFotoArsip">
+        <div class="overlay-header"><h2>Galeri Foto Kegiatan</h2><button class="btn-close-overlay" onclick="closeSubOverlay('overlayFotoArsip')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+        <p style="font-size: 0.9rem; color: var(--text-gray);">Menampilkan semua arsip dokumentasi foto...</p>
+    </div>
+    <div class="sub-overlay" id="overlayVideoArsip">
+        <div class="overlay-header"><h2>Galeri Video Reels</h2><button class="btn-close-overlay" onclick="closeSubOverlay('overlayVideoArsip')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button></div>
+        <p style="font-size: 0.9rem; color: var(--text-gray);">Menampilkan semua arsip dokumentasi video...</p>
+    </div>
+
+    <section class="supported-section">
+        <div class="supported-title">Supported By</div>
+        <div class="columns-3">
+            <div class="partner-col">LHC/Lombok Hotelier Community, IFBEC NTB, IHKA NTB, ICA, PALM HOUSE, LOMBOK ORIGIN, AMBER RESORT, DOME HOTEL, RASCAL VILLAS, SOMEWHERE RESORT, KUMBARA VILLA, JM HOTEL, RAJA MANDALIKA HOTEL, PULLMAN HOTEL, NOVOTEL HOTEL, VILLA ATAS PELANGI, MAD MONKEY, TAMPAH HILL, EL TROPICO HOTEL, JIVANA RESORT, FANFILA HOTEL, LOKA GYM RESTAURANT, L'OLIVIER RESTAURANT.</div>
+            <div class="partner-col">EL BAZZAR CAFE & RESTAURANT, KRNK BAR & RESTAURANT, JIANG NAN RESTAURANT, OOLAA BAR & RESTAURANT, MAMA PIZZA, GECKO RESTAURANT, SAPORI RESTAURANT, KEMANGI BAR & RESTAURANT, 5 FRENCHIES CAFE, BARA RESTAURANT, LOOP VILLAS, MONTANA HOTEL, SHERATON HOTEL, LOMBOK ASTORIA HOTEL, HPI, QUNCI VILLAS, KILA HOTEL, THE CHANDI RESORT, PURI MAS BOUTIQUE, JEEVA GROUP, KALANDARA RESORT, KATAMARAN HOTEL, SANTIKA HOTEL.</div>
+            <div class="partner-col">ASTON INN HOTEL, LOMBOK PLAZA HOTEL, LOMBOK RAYA HOTEL, ROYAL AVILA BOUTIQUE, SWISS BELCOURT LOMBOK, CHILL OUT BAR & RESTAURANT, SAFARIS RESTAURANT, KULUKU RESORT, PINK COCO, DESA DUNIA BEDA, WARNA RESTAURANT, SADEV RESORT, EVOLUTION BAR, SAMA SAMA BAR & RESTAURANT, MARCH HOTEL, PONTE VILLAS, VILLA KARANG, JAMBULUWUK, FRII RESORT, SANTORINY, VILLA OMBAK, ROYAL REGENTRIS, LUMI HOTEL, NATYA HOTEL, PONDOK SANTI, BLUE D'MARE, VILLA UTARA, ASTON HOTEL, MANTA DIVE, VILLA AL MARIK, GILI ECHO, WILSON RETREAT.</div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo-area">
+            <div class="footer-logo-placeholder"></div>
+            <div class="footer-info"><strong>PPLP PARIWISATA SILEDENDEN NUSANTARA</strong><span>Izin No. 421.9/563/Disdik</span><span>Jln. Raya Pariwisata Pengembur - Mawun Km 10</span></div>
+        </div>
+        <div class="footer-links">
+            <a href="https://wa.me." class="footer-link-item"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.666.988 3.311 1.512 5.353 1.513 5.544 0 10.047-4.486 10.05-10.002.002-2.673-1.033-5.186-2.918-7.073-1.884-1.885-4.393-2.923-7.069-2.924-5.55 0-10.056 4.488-10.06 10.003-.001 2.154.568 4.258 1.649 6.104l-.997 3.645 3.738-.979zm11.233-7.234c.31-.154.522-.23.585-.34.064-.11.064-.633-.026-.887-.09-.255-.788-1.9-.1.08-.258-.59-.512-.78-.767-.253-.254-.502-.38-.76-.38-.256 0-.656.096-1 .496-.344.4-.737.79-.737 1.22 0 .43.344.847.39.915.044.067.66 1.054 1.62 1.433.957.38 1.152.304 1.564.267.412-.037 1.33-.544 1.52-.77.19-.227.19-.422.133-.532zm-7.05-2.63c-.143-.324-.295-.329-.433-.335-.114-.005-.246-.005-.377-.005-.132 0-.346.048-.528.247-.182.198-.692.677-.692 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992 1.99.86 1.99.573 2.35.539.362-.034 1.166-.477 1.33-.938.163-.462.163-.858.114-.938-.049-.08-.18-.132-.38-.23z"/></svg><span>WhatsApp: 082147506532</span></a>
+            <a href="mailto:pplp.siledenden.lombok@gmail.com" class="footer-link-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg><span>Email: pplp.siledenden.lombok@gmail.com</span></a>
+            <a href="#" class="footer-link-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg><span>Instagram: pplp.siledenden.lombok</span></a>
+            <a href="#" class="footer-link-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.8z"/></svg><span>Facebook: Pplp Siledenden</span></a>
+        </div>
+
+        <div class="validation-box">
+            <div class="validation-title">Pencarian Sertifikat Alumni</div>
+            <div class="validation-desc">Cek keabsahan sertifikat kelulusan yang Anda miliki.</div>
+            <div class="input-group">
+                <input type="text" class="cert-input" id="certInput" placeholder="Contoh: SERTI/2026/0001">
+                <button class="btn-check-cert" onclick="validateCertificate()">Cek</button>
+            </div>
+            <div class="error-msg" id="errorMsg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg><span>Nomor sertifikat tidak terdaftar</span></div>
+        </div>
+        <div class="copyright">©️ 2026 PPLP Pariwisata Siledenden Nusantara. Hak Cipta Dilindungi.</div>
+    </footer>
+
+    <a href="https://wa.me." class="whatsapp-float" target="_blank" rel="noopener noreferrer"><svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.713-1.457L0 24zm6.59-4.846c1.666.988 3.311 1.512 5.353 1.513 5.544 0 10.047-4.486 10.05-10.002.002-2.673-1.033-5.186-2.918-7.073-1.884-1.885-4.393-2.923-7.069-2.924-5.55 0-10.056 4.488-10.06 10.003-.001 2.154.568 4.258 1.649 6.104l-.997 3.645 3.738-.979zm11.233-7.234c.31-.154.522-.23.585-.34.064-.11.064-.633-.026-.887-.09-.255-.788-1.9-.1.08-.258-.59-.512-.78-.767-.253-.254-.502-.38-.76-.38-.256 0-.656.096-1 .496-.344.4-.737.79-.737 1.22 0 .43.344.847.39.915.044.067.66 1.054 1.62 1.433.957.38 1.152.304 1.564.267.412-.037 1.33-.544 1.52-.77.19-.227.19-.422.133-.532zm-7.05-2.63c-.143-.324-.295-.329-.433-.335-.114-.005-.246-.005-.377-.005-.132 0-.346.048-.528.247-.182.198-.692.677-.692 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992 1.99.86 1.99.573 2.35.539.362-.034 1.166-.477 1.33-.938.163-.462.163-.858.114-.938-.049-.08-.18-.132-.38-.23z"/></svg></a>
+
+    <div class="modal-overlay" id="certModal">
+        <div class="modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="font-weight: 800; font-size: 1.1rem; color: #0056b3;">Sertifikat Terverifikasi ✓</h3>
+                <button class="btn-close-overlay" onclick="closeCertModal()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+            </div>
+            <table class="cert-table">
+                <tr><th>Nama Alumni</th><td>Moh Yani Saharudin</td></tr>
+                <tr><th>No. Sertifikat</th><td>SERTI/2026/0001</td></tr>
+                <tr><th>Program Studi</th><td>F & B Product / Tata Boga</td></tr>
+                <tr><th>Status Kelulusan</th><td style="color: green; font-weight: 700;">ASLI / TERDAFTAR</td></tr>
+            </table>
+            <a href="#" class="btn-download-pdf" onclick="alert('Mengunduh berkas sertifikat PDF...')">Unduh Berkas Sertifikat (PDF)</a>
+        </div>
+    </div>
+
+    <script>
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const hamburgerIcon = document.getElementById('hamburgerIcon');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const btnInformasi = document.getElementById('btnInformasi');
+        const subMenuInformasi = document.getElementById('subMenuInformasi');
+        const chevron = btnInformasi.querySelector('.chevron');
+        const btnBeranda = document.getElementById('btnBeranda');
+
+        let isMenuOpen = false;
+        menuToggleBtn.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if (isMenuOpen) {
+                menuOverlay.classList.add('active');
+                hamburgerIcon.innerHTML = '<line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>';
+            } else { closeMainMenu(); }
+        });
+
+        function closeMainMenu() { isMenuOpen = false; menuOverlay.classList.remove('active'); hamburgerIcon.innerHTML = '<line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="17" x2="20" y2="17"></line>'; }
+        btnBeranda.addEventListener('click', () => { closeMainMenu(); window.scrollTo({ top: 0, behavior: 'smooth' }); });
+        btnInformasi.addEventListener('click', () => { subMenuInformasi.classList.toggle('active'); chevron.classList.toggle('rotate'); });
+        function openSubOverlay(id) { document.getElementById(id).classList.add('active'); }
+        function closeSubOverlay(id) { document.getElementById(id).classList.remove('active'); }
+        document.getElementById('subStruktur').addEventListener('click', () => openSubOverlay('overlayStruktur'));
+        document.getElementById('subVisiMisi').addEventListener('click', () => openSubOverlay('overlayVisiMisi'));
+        document.getElementById('subProgram').addEventListener('click', () => openSubOverlay('overlayProgram'));
+
+        function validateCertificate() {
+            const inputVal = document.getElementById('certInput').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const certModal = document.getElementById('certModal');
+            if (inputVal === "SERTI/2026/0001") { errorMsg.style.display = 'none'; certModal.classList.add('active'); } 
+            else { errorMsg.style.display = 'flex'; certModal.classList.remove('active'); }
+        }
+        function closeCertModal() { document.getElementById('certModal').classList.remove('active'); }
+    </script>
+</body>
+</html>
